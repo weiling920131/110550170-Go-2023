@@ -27,14 +27,11 @@ func lcm(n1 int , n2 int) int{
 }
 
 func Calculator(w http.ResponseWriter, r *http.Request) {
-	// TODO: Finish this function
 	
 	op := r.URL.Query().Get("op")
 	num1 := r.URL.Query().Get("num1")
 	num2 := r.URL.Query().Get("num2")
-	// fmt.Fprintf(w, op)
-	// fmt.Fprintf(w, num1)
-	// fmt.Fprintf(w, num2)
+
 	if(op == "" || num1=="" || num2==""){
 		http.ServeFile(w, r, "error.html")
 		return
@@ -43,7 +40,6 @@ func Calculator(w http.ResponseWriter, r *http.Request) {
 	n2, err := strconv.Atoi(num2)
 	
 	if err != nil {
-		// Add code here to handle the error!
 		http.ServeFile(w, r, "error.html")
 		return
 	 }
