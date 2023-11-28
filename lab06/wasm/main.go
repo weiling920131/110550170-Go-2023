@@ -20,6 +20,7 @@ func CheckPrime(this js.Value, args []js.Value) interface{} {
 	}else {
 		js.Global().Get("answer").Set("innerText", "It's not prime")
 	}
+	
 	return str
 }
 
