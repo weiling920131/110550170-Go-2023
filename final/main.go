@@ -194,7 +194,7 @@ import (
 
 func main() {
     // 获取OpenAI API key
-    apiKey := os.Getenv("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")
+    apiKey := os.Getenv("GPT_API_KEY")
 
     // 创建OpenAI客户端
     client := openai.NewClient(apiKey)
