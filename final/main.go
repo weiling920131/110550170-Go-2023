@@ -190,16 +190,20 @@ import (
 	"time"
     "os"
     "github.com/sashabaranov/go-openai"
+	"github.com/joho/godotenv"
 )
 
 func main() {
     // 获取OpenAI API key
+	err := godotenv.Load()
+    if err != nil {
+        fmt.Println("Error loading .env file")
+    }
     apiKey := os.Getenv("GPT_API_KEY")
-
     // 创建OpenAI客户端
     client := openai.NewClient(apiKey)
 	req := openai.CompletionRequest{
-		Model:       "text-davinci-001", // 模型名称或 ID
+        Model:       "gpt-3.5-turbo", // 模型名称或 ID
 		Prompt:      "Once upon a time", // 输入的文本提示
 		MaxTokens:   50,                 // 生成的最大标记数量
 		// 可以添加其他参数，比如Temperature、Stop等
@@ -207,16 +211,21 @@ func main() {
 	parentCtx := context.Background()                             // 创建一个顶层父 Context
 	ctxWithTimeout, cancel := context.WithTimeout(parentCtx, 3*time.Second)
 	defer cancel()
-	resp, err := client.CreateCompletionStream(ctxWithTimeout ,req)
+	// resp, err := client.CreateCompletionStream(ctxWithTimeout ,req)
     // 调用OpenAI API
-    // resp, err := client.Completion.Create(
-    //     "The quick brown fox jumps over the lazy dog",
-    //     "The quick brown fox jumps over the",
-    //     10,
-    // )
+    stream, err := client.CreateCompletionStream(ctxWithTimeout ,req)
     if err != nil {
         log.Fatal(err)
+        return
     }
+    err = stream.Listen(func(resp openai.CompletionResponse, err error) {
+		if err != nil {
+			log.Fatal(err)
+		}
 
-    fmt.Println(resp)
+		// Output the generated text result
+		fmt.Println(resp.Choices[0].Text)
+	})
+    // fmt.Println(resp.Choices[0].Text)
+    fmt.Println("check")
 }
