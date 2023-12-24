@@ -89,6 +89,9 @@ func InitObservable() {
 		}).Map(...) {
 			...
 		})
+
+	    ff
+			
 	*/
 
 	ObservableMsg = ObservableMsg.Filter(func(item interface{}) bool {
